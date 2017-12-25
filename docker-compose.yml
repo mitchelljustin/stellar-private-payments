@@ -1,0 +1,10 @@
+version: "2"
+services:
+  app:
+    build: .
+    links:
+    - redis
+  redis:
+    image: redis
+    ports:
+    - "6379:6379"

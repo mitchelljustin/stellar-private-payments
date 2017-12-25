@@ -1,0 +1,12 @@
+[main]
+network = "test"
+
+[stellar.test]
+keyfile="./secret/test.strkey"
+horizon_uri="https://horizon-testnet.stellar.org"
+network_passphrase="Test SDF Network ; September 2015"
+
+[stellar.public]
+keyfile="./secret/public.strkey"
+horizon_uri="https://horizon.stellar.org"
+network_passphrase = "Public Global Stellar Network ; September 2015"
