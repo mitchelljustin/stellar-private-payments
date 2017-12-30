@@ -5,3 +5,6 @@ jspm_packages
 # Serverless directories
 .serverless
 *.env.js
+
+secrets.*.yml
+*.strkey
