@@ -1,0 +1,13 @@
+service: ppstellar
+
+provider:
+  name: aws
+  profile: personal
+  region: us-east-1
+  runtime: nodejs6.10
+
+functions:
+  hello:
+    handler: lib/lambdas.hello
+    events:
+    - http: GET hello
