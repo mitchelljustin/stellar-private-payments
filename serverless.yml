@@ -11,7 +11,7 @@ functions:
   hello:
     handler: lib/lambdas.hello
     events:
-    - http: POST hello
+    - http: GET hello
   startPrivatePayment:
     handler: lib/lambdas.startPrivatePayment
     events:
@@ -19,15 +19,15 @@ functions:
   getPrivatePayment:
     handler: lib/lambdas.getPrivatePayment
     events:
-    - http: POST get_private_payment
+    - http: GET get_private_payment
   getMixTransaction:
     handler: lib/lambdas.getMixTransaction
     events:
-    - http: POST get_mix_transaction
-  postSignedTransaction:
-    handler: lib/lambdas.postSignedTransaction
+    - http: GET get_mix_transaction
+  signMixTransaction:
+    handler: lib/lambdas.signMixTransaction
     events:
-    - http: POST post_signed_transaction
+    - http: POST sign_mix_transaction
 
 
 plugins:
