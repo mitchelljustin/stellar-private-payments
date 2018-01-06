@@ -162,7 +162,7 @@ asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
 
-aws-sdk@^2.75.0:
+aws-sdk@^2.176.0, aws-sdk@^2.75.0:
   version "2.176.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.176.0.tgz#2723c14e1c623ac45c5b890a3fc736eee8085f67"
   dependencies:
@@ -341,7 +341,7 @@ bl@^1.0.0:
   dependencies:
     readable-stream "^2.0.5"
 
-bluebird@^3.1.5, bluebird@^3.3.3, bluebird@^3.5.0, bluebird@^3.5.1:
+bluebird@^3.1.5, bluebird@^3.5.0, bluebird@^3.5.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.1.tgz#d9551f9de98f1fcda1e683d17ee91a0602ee2eb9"
 
@@ -519,7 +519,7 @@ combined-stream@^1.0.5:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@^2.9.0:
+commander@^2.12.2, commander@^2.9.0:
   version "2.12.2"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.12.2.tgz#0f5946c427ed9ec0d91a46bb9def53e54650e555"
 
@@ -2016,12 +2016,6 @@ redis@^2.8.0:
     double-ended-queue "^2.1.0-0"
     redis-commands "^1.2.0"
     redis-parser "^2.6.0"
-
-redlock@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/redlock/-/redlock-3.1.0.tgz#9044980202f1bb30550a6ef12ad67dd9bf0c11d4"
-  dependencies:
-    bluebird "^3.3.3"
 
 redux@^3.4.0:
   version "3.7.2"

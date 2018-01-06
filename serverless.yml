@@ -16,10 +16,6 @@ functions:
     handler: lib/lambdas.startPrivatePayment
     events:
     - http: POST start_private_payment
-  getPrivatePayment:
-    handler: lib/lambdas.getPrivatePayment
-    events:
-    - http: GET get_private_payment
   getMixTransaction:
     handler: lib/lambdas.getMixTransaction
     events:
@@ -28,6 +24,9 @@ functions:
     handler: lib/lambdas.signMixTransaction
     events:
     - http: POST sign_mix_transaction
+  createMixTransaction:
+    handler: lib/lambdas.createMixTransaction
+    events: []
 
 
 plugins:
