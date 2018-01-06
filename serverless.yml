@@ -8,25 +8,45 @@ provider:
   stage: dev
 
 functions:
-  hello:
-    handler: lib/lambdas.hello
-    events:
-    - http: GET hello
   startPrivatePayment:
-    handler: lib/lambdas.startPrivatePayment
+    handler: lib/lambda/startPrivatePayment.entry
     events:
-    - http: POST start_private_payment
-  getMixTransaction:
-    handler: lib/lambdas.getMixTransaction
+    - http: POST private_payment
+  getUnsignedMixTx:
+    handler: lib/lambda/getUnsignedMixTx.entry
     events:
-    - http: GET get_mix_transaction
-  signMixTransaction:
-    handler: lib/lambdas.signMixTransaction
+    - http:
+        path: mix_tx/{id}/unsigned
+        method: get
+        request:
+          parameters:
+            paths:
+              id: true
+  signMixTx:
+    handler: lib/lambda/signMixTx.entry
     events:
-    - http: POST sign_mix_transaction
-  createMixTransaction:
-    handler: lib/lambdas.createMixTransaction
-    events: []
+    - http:
+        path: mix_tx/{id}/signature
+        method: post
+        request:
+          parameters:
+            paths:
+              id: true
+  getSignedMixTx:
+    handler: lib/lambda/getSignedMixTx.entry
+    events:
+    - http:
+        path: mix_tx/{id}/signed
+        method: get
+        request:
+          parameters:
+            paths:
+              id: true
+
+  startMix:
+    handler: lib/lambda/startMix.entry
+    events:
+    - http: POST internal/mix
 
 
 plugins:

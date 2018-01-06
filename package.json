@@ -1,24 +1,24 @@
 {
   "name": "stellar-private-payments",
-  "version": "0.0.1",
-  "description": "Private Payments on Stellar",
-  "main": "server.js",
+  "version": "1.0.0",
+  "main": "''",
+  "repository": "git@github.com:mvanderh/stellar-private-payments.git",
   "author": "Mitchell Van Der Hoeff <mitchell.vanderhoeff@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev:sls": "./node_modules/serverless/bin/serverless offline --port 4000 start"
+    "test": "mocha"
   },
   "dependencies": {
-    "aws-sdk": "^2.176.0",
-    "bluebird": "^3.5.1",
-    "commander": "^2.12.2",
-    "express": "^4.16.2",
-    "peer": "^0.2.8",
+    "async": "^2.6.0",
+    "big-integer": "^1.6.26",
     "redis": "^2.8.0",
     "serverless": "^1.25.0",
     "serverless-offline": "^3.16.0",
-    "shuffle-array": "^1.0.1",
     "stellar-sdk": "^0.8.0",
     "uuid": "^3.1.0"
+  },
+  "devDependencies": {
+    "assert": "^1.4.1",
+    "mocha": "^4.1.0"
   }
 }
