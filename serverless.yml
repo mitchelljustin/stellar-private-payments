@@ -43,10 +43,17 @@ functions:
             paths:
               id: true
 
+  initiateMixes:
+    handler: lib/lambda/initiateMixes.entry
+    events:
+    - schedule: rate(1 second)
+    - http: POST internal/initiate_mixes
+    environment:
+      START_MIX_URI: http://localhost:4000/internal/start_mix
   startMix:
     handler: lib/lambda/startMix.entry
     events:
-    - http: POST internal/mix
+    - http: POST internal/start_mix
 
 
 plugins:
