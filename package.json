@@ -6,14 +6,15 @@
   "author": "Mitchell Van Der Hoeff <mitchell.vanderhoeff@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "serve": "node $NODE_DEBUG_OPTION node_modules/.bin/sls offline --port 4000 start",
     "test": "mocha"
   },
   "dependencies": {
     "async": "^2.6.0",
     "base64-arraybuffer": "^0.1.5",
     "big-integer": "^1.6.26",
+    "commander": "^2.13.0",
     "redis": "^2.8.0",
-    "request": "^2.83.0",
     "serverless": "^1.25.0",
     "serverless-offline": "^3.16.0",
     "shuffle-array": "^1.0.1",

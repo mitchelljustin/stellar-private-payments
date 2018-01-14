@@ -12,11 +12,11 @@ functions:
     handler: lib/lambda/startPrivatePayment.entry
     events:
     - http: POST private_payment
-  getUnsignedMixTx:
-    handler: lib/lambda/getUnsignedMixTx.entry
+  getMixTx:
+    handler: lib/lambda/getMixTx.entry
     events:
     - http:
-        path: mix_tx/{id}/unsigned
+        path: private_payment/{id}/tx
         method: get
         request:
           parameters:
@@ -26,18 +26,8 @@ functions:
     handler: lib/lambda/signMixTx.entry
     events:
     - http:
-        path: mix_tx/{id}/signature
+        path: private_payment/{id}/sign
         method: post
-        request:
-          parameters:
-            paths:
-              id: true
-  getSignedMixTx:
-    handler: lib/lambda/getSignedMixTx.entry
-    events:
-    - http:
-        path: mix_tx/{id}/signed
-        method: get
         request:
           parameters:
             paths:
@@ -48,12 +38,6 @@ functions:
     events:
     - schedule: rate(1 second)
     - http: POST internal/initiate_mixes
-    environment:
-      START_MIX_URI: http://localhost:4000/internal/start_mix
-  startMix:
-    handler: lib/lambda/startMix.entry
-    events:
-    - http: POST internal/start_mix
 
 
 plugins:
