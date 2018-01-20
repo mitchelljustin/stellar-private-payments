@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import ExecutePayment from '@/components/ExecutePayment'
+import StartPayment from '@/components/StartPayment'
+import MixingPayment from '@/components/MixingPayment'
 
 Vue.use(Router)
 
@@ -8,8 +9,13 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'ExecutePayment',
-      component: ExecutePayment,
+      name: 'StartPayment',
+      component: StartPayment,
+    },
+    {
+      path: '/mixing',
+      name: 'MixingPayment',
+      component: MixingPayment,
     },
   ],
 })
