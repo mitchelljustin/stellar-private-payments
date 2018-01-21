@@ -13,7 +13,7 @@ export default new Router({
       component: StartPayment,
     },
     {
-      path: '/mixing/:id',
+      path: '/payment/:id',
       name: 'MixingPayment',
       component: MixingPayment,
     },

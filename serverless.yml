@@ -11,12 +11,12 @@ functions:
   startPrivatePayment:
     handler: lib/lambda/startPrivatePayment.entry
     events:
-    - http: POST private_payment
-  getMixTx:
-    handler: lib/lambda/getMixTx.entry
+    - http: POST api/private-payment
+  getPrivatePayment:
+    handler: lib/lambda/getPrivatePayment.entry
     events:
     - http:
-        path: private_payment/{id}/tx
+        path: api/private-payment/{id}
         method: get
         request:
           parameters:
@@ -26,7 +26,7 @@ functions:
     handler: lib/lambda/signMixTx.entry
     events:
     - http:
-        path: private_payment/{id}/sign
+        path: api/private-payment/{id}/sign
         method: post
         request:
           parameters:

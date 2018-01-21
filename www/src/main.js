@@ -6,15 +6,17 @@ import router from './router'
 import VueResource from 'vue-resource'
 import 'vue-awesome/icons'
 import Icon from 'vue-awesome/components/Icon'
-import Spinner from 'vue-simple-spinner'
+import VueProgress from 'vue-progress'
+import VModal from 'vue-js-modal'
 
 Vue.config.productionTip = false
 
+Vue.use(VModal, {dialog: true})
+Vue.use(VueProgress)
 Vue.use(VueResource)
 Vue.http.options.root = process.env.MATCHING_SERVER_URI
 
 Vue.component('icon', Icon)
-Vue.component('spinner', Spinner)
 
 /* eslint-disable no-new */
 new Vue({

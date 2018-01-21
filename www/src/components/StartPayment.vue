@@ -1,27 +1,11 @@
 <template>
-  <form method="POST" target="_blank">
-    <h1>Siyan</h1>
-    <h2>Private Payment</h2>
-    <div class="field">
-      <p class="input-label">
-        <label for="source">
-          Source
-        </label>
-      </p>
-      <div>
-        <p v-if="errors.source" class="error">
-          {{ errors.source }}
-        </p>
-        <input type="text"
-               :class="{error: errors.source}"
-               v-model="form.source"
-               id="source">
-      </div>
-    </div>
+  <div>
+    <h2>New Payment</h2>
+    <v-dialog height="auto"/>
     <div class="field">
       <p class="input-label">
         <label for="destination">
-          Destination
+          Destination Account
         </label>
       </p>
       <div>
@@ -48,30 +32,60 @@
                id="secretKey">
       </div>
     </div>
-    <div class="field">
+    <div class="field" style="display: none">
       <p class="input-label">
-        <label for="size">
-          Amount (XLM)
+        <label for="source">
+          Source Account
         </label>
       </p>
       <div>
-        <p v-if="errors.size" class="error">{{ errors.size }}</p>
-        <input type="number"
-               v-model="form.size"
-               id="size"
-               step="0.0000001"
-               :class="[{error: errors.size}, 'payment-size-input']">
+        <input type="text"
+               disabled
+               v-model="form.source"
+               id="source">
       </div>
     </div>
-    <div>
-      <input @click="proceed" id="submit" type="submit" value="PROCEED ➡">
+    <div class="field">
+      <div class="paired">
+        <div class="amount">
+          <p class="input-label">
+            <label for="size">
+              Amount (XLM)
+            </label>
+          </p>
+          <p v-if="errors.size" class="error">{{ errors.size }}</p>
+          <input type="number"
+                 v-model="form.size"
+                 id="size"
+                 step="5"
+                 min="5"
+                 :class="[{error: errors.size}, 'payment-size-input']">
+        </div>
+        <div class="proceed">
+          <input @click="proceed" id="submit" type="submit" value="GO">
+        </div>
+      </div>
     </div>
-  </form>
+  </div>
 </template>
 
 <script>
   import signingPrivPmt from '../../../lib/helpers/signingPrivPmt'
+  import convertStroops from '../../../lib/helpers/convertStroops'
   import stellarKey from '../helpers/stellarKey'
+  import {Stellar} from '../../../lib/integration/stellar'
+
+  function checkPaymentSize(size) {
+    if (size === '') {
+      return 'Amount is empty'
+    }
+    try {
+      convertStroops.fromString(size)
+    } catch (e) {
+      return e.message
+    }
+    return null
+  }
 
   export default {
     name: 'StartPayment',
@@ -79,7 +93,6 @@
       return {
         secretKeyInputType: 'password',
         errors: {
-          source: null,
           destination: null,
           size: null,
           secretKey: null,
@@ -98,28 +111,41 @@
       },
       hideSecretKey() {
         this.secretKeyInputType = 'password'
+        this.validate({
+          fieldName: 'secretKey',
+          validator: stellarKey.checkSecretKey,
+        })
+        if (this.errors.secretKey === null) {
+          this.form.source = Stellar.Keypair.fromSecret(this.form.secretKey).publicKey()
+        } else {
+          this.form.source = ''
+        }
       },
-      validate({fieldName, validator, errorMsg}) {
-        if (!validator(this.form[fieldName])) {
-          this.errors[fieldName] = errorMsg
+      validate({fieldName, validator}) {
+        let value = this.form[fieldName]
+        let errorMsg
+        if (value === '') {
+          errorMsg = 'Empty'
+        } else {
+          errorMsg = validator(value)
+        }
+        if (errorMsg !== null) {
+          this.errors[fieldName] = `Invalid ${fieldName}: ${errorMsg}`
         }
       },
       proceed(e) {
         e.preventDefault()
         this.validate({
-          fieldName: 'source',
-          validator: stellarKey.isValidPublicKey,
-          errorMsg: 'Invalid public key'
-        })
-        this.validate({
           fieldName: 'destination',
-          validator: stellarKey.isValidPublicKey,
-          errorMsg: 'Invalid public key'
+          validator: stellarKey.checkPublicKey,
         })
         this.validate({
           fieldName: 'secretKey',
-          validator: stellarKey.isValidSecretKey,
-          errorMsg: 'Invalid secret key'
+          validator: stellarKey.checkSecretKey,
+        })
+        this.validate({
+          fieldName: 'size',
+          validator: checkPaymentSize,
         })
         if (this.hasErrors) {
           return
@@ -128,17 +154,44 @@
 
         let payment = {source, destination, size}
         payment.signature = signingPrivPmt.sign(payment, secretKey)
-        this.$http.post('private_payment', payment)
-          .then((res) => {
-            let {id} = res.body
-            this.$router.push({
-              name: 'MixingPayment',
-              params: {id}
+        let payFunction = () => {
+          this.$modal.hide('dialog')
+          this.$http.post('api/private-payment', payment)
+            .then((res) => {
+              let {id} = res.body
+              this.$router.push({
+                name: 'MixingPayment',
+                params: {id}
+              })
             })
-          })
-          .catch((e) => {
-            alert(`Error with mix payment: ${JSON.stringify(e)}`)
-          })
+            .catch((e) => {
+              this.$modal.show('dialog', {
+                title: 'Error',
+                text: `Error with payment: ${JSON.stringify(e.body)}`,
+                buttons: [
+                  {
+                    title: 'Close',
+                  }
+                ]
+              })
+            })
+        }
+        let sourceTrunc = payment.source.slice(0, 8) + '..' + payment.source.slice(payment.source.length - 8)
+        let destinationTrunc = payment.destination.slice(0, 8) + '..' + payment.destination.slice(payment.destination.length - 8)
+        this.$modal.show('dialog', {
+          title: 'Confirm',
+          text: `Pay ${size} XLM \nfrom ${sourceTrunc} \nto ${destinationTrunc}?`,
+          buttons: [
+            {
+              title: 'Pay',
+              default: true,
+              handler: payFunction,
+            },
+            {
+              title: 'Close',
+            },
+          ]
+        })
       },
     },
     computed: {

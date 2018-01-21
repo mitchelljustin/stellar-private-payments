@@ -13,9 +13,10 @@
   "dependencies": {
     "vue": "^2.5.2",
     "vue-awesome": "^2.3.4",
+    "vue-js-modal": "^1.3.8",
+    "vue-progress": "^0.2.1",
     "vue-resource": "^1.3.5",
-    "vue-router": "^3.0.1",
-    "vue-simple-spinner": "^1.2.8"
+    "vue-router": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
