@@ -43,6 +43,7 @@
     width: 60%;
     min-width: 400px;
     max-width: 1080px;
+    min-height: 400px;
     background-color: #FEFEFE;
     box-shadow: 1px 1px 4px rgba(0, 0, 0, .5);
   }
@@ -108,5 +109,33 @@
 
   .spinner {
     padding: 3em 0 4em;
+  }
+
+  .subdued {
+    margin: 0.65em 0 0.35em;
+  }
+
+  a {
+    cursor: pointer;
+    color: #0001b6;
+    font-size: 0.9em;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #54d0d3;
+  }
+
+  h4 {
+    margin: 0.5em 0 0.7em;
+  }
+
+  .statusText {
+    margin-top: 8px;
+    margin-bottom: 1.5em;
+    color: rgb(85, 85, 85);
+    font-size: 26px;
+    text-align: center;
   }
 </style>

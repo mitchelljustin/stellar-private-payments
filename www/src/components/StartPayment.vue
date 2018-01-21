@@ -8,15 +8,15 @@
           Source
         </label>
       </p>
-      <p>
-      <p v-if="errors.source" class="error">
-        {{ errors.source }}
-      </p>
-      <input type="text"
-             :class="{error: errors.source}"
-             v-model="form.source"
-             id="source">
-      </p>
+      <div>
+        <p v-if="errors.source" class="error">
+          {{ errors.source }}
+        </p>
+        <input type="text"
+               :class="{error: errors.source}"
+               v-model="form.source"
+               id="source">
+      </div>
     </div>
     <div class="field">
       <p class="input-label">
@@ -24,13 +24,13 @@
           Destination
         </label>
       </p>
-      <p>
-      <p v-if="errors.destination" class="error">{{ errors.destination }}</p>
-      <input type="text"
-             :class="{error: errors.destination}"
-             v-model="form.destination"
-             id="destination">
-      </p>
+      <div>
+        <p v-if="errors.destination" class="error">{{ errors.destination }}</p>
+        <input type="text"
+               :class="{error: errors.destination}"
+               v-model="form.destination"
+               id="destination">
+      </div>
     </div>
     <div class="field">
       <p class="input-label">
@@ -38,15 +38,15 @@
           Secret Key
         </label>
       </p>
-      <p>
-      <p v-if="errors.secretKey" class="error">{{ errors.secretKey }}</p>
-      <input :type="secretKeyInputType"
-             :class="{error: errors.secretKey}"
-             @focus="showSecretKey"
-             @blur="hideSecretKey"
-             v-model="form.secretKey"
-             id="secretKey">
-      </p>
+      <div>
+        <p v-if="errors.secretKey" class="error">{{ errors.secretKey }}</p>
+        <input :type="secretKeyInputType"
+               :class="{error: errors.secretKey}"
+               @focus="showSecretKey"
+               @blur="hideSecretKey"
+               v-model="form.secretKey"
+               id="secretKey">
+      </div>
     </div>
     <div class="field">
       <p class="input-label">
@@ -54,14 +54,14 @@
           Amount (XLM)
         </label>
       </p>
-      <p>
-      <p v-if="errors.size" class="error">{{ errors.size }}</p>
-      <input type="number"
-             v-model="form.size"
-             id="size"
-             step="0.0000001"
-             :class="[{error: errors.size}, 'payment-size-input']">
-      </p>
+      <div>
+        <p v-if="errors.size" class="error">{{ errors.size }}</p>
+        <input type="number"
+               v-model="form.size"
+               id="size"
+               step="0.0000001"
+               :class="[{error: errors.size}, 'payment-size-input']">
+      </div>
     </div>
     <div>
       <input @click="proceed" id="submit" type="submit" value="PROCEED ➡">
@@ -129,9 +129,15 @@
         let payment = {source, destination, size}
         payment.signature = signingPrivPmt.sign(payment, secretKey)
         this.$http.post('private_payment', payment)
-          .catch((e) => console.error(e))
-          .then(() => {
-            this.$router.push({ name: 'MixingPayment' })
+          .then((res) => {
+            let {id} = res.body
+            this.$router.push({
+              name: 'MixingPayment',
+              params: {id}
+            })
+          })
+          .catch((e) => {
+            alert(`Error with mix payment: ${JSON.stringify(e)}`)
           })
       },
     },
